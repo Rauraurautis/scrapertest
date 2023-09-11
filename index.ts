@@ -1,8 +1,8 @@
 import { scrapeTori } from "./util/scrapers/toriscraper"
-var player = require('play-sound')()
+import player from "play-sound"
 
 const playNotification = () => {
-    player.play("./notification.mp3", (err: any) => {
+    player().play("./notification.mp3", (err: any) => {
         if (err) throw err
     })
 }
