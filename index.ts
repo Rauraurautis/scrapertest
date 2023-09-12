@@ -1,4 +1,4 @@
-import { scrapeTori } from "./util/scrapers/toriscraper"
+import { scrapeToriAxios } from "./util/scrapers/axiostoricraper"
 import player from "play-sound"
 
 const playNotification = () => {
@@ -6,7 +6,7 @@ const playNotification = () => {
         if (err) throw err
     })
 }
-
+/*
 const getToriItems = async () => {
     const items = await scrapeTori()
     return items
@@ -32,8 +32,23 @@ setInterval(() => {
     })
 }, 10000)
 
+*/
 
+let topFive: { [x: number]: string }[] = []
 
+scrapeToriAxios(5).then(data => {
+    if (data) topFive = data
+}).catch(err => console.error(err))
 
+setInterval(() => {
+    scrapeToriAxios(5).then(data => {
+        if (data) {
+            if (data[0]["1"] != topFive[0]["1"]) {
+                console.log(data)
+                topFive = data
+                playNotification()
+            }
+        }
+    })
+}, 20000)
 
-export { }
