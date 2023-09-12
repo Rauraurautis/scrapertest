@@ -3,14 +3,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const axiostoricraper_1 = require("./util/scrapers/axiostoricraper");
-const play_sound_1 = __importDefault(require("play-sound"));
-const playNotification = () => {
-    (0, play_sound_1.default)().play("./notification.mp3", (err) => {
-        if (err)
-            throw err;
-    });
-};
+const express_1 = __importDefault(require("express"));
+const routes_1 = require("./routes");
+const cors_1 = __importDefault(require("cors"));
+const app = (0, express_1.default)();
 /*
 const getToriItems = async () => {
     const items = await scrapeTori()
@@ -38,19 +34,8 @@ setInterval(() => {
 }, 10000)
 
 */
-let topFive = [];
-(0, axiostoricraper_1.scrapeToriAxios)(5).then(data => {
-    if (data)
-        topFive = data;
-}).catch(err => console.error(err));
-setInterval(() => {
-    (0, axiostoricraper_1.scrapeToriAxios)(5).then(data => {
-        if (data) {
-            if (data[0]["1"] != topFive[0]["1"]) {
-                console.log(data);
-                topFive = data;
-                playNotification();
-            }
-        }
-    });
-}, 20000);
+app.use((0, cors_1.default)());
+app.listen(3005, () => {
+    console.log("Listening to port 3005");
+    (0, routes_1.routes)(app);
+});

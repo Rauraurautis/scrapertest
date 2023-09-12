@@ -1,11 +1,8 @@
-import { scrapeToriAxios } from "./util/scrapers/axiostoricraper"
-import player from "play-sound"
+import express from "express"
+import { routes } from "./routes"
+import cors from "cors"
+const app = express()
 
-const playNotification = () => {
-    player().play("./notification.mp3", (err: any) => {
-        if (err) throw err
-    })
-}
 /*
 const getToriItems = async () => {
     const items = await scrapeTori()
@@ -33,22 +30,10 @@ setInterval(() => {
 }, 10000)
 
 */
+app.use(cors())
 
-let topFive: { [x: number]: string }[] = []
 
-scrapeToriAxios(5).then(data => {
-    if (data) topFive = data
-}).catch(err => console.error(err))
-
-setInterval(() => {
-    scrapeToriAxios(5).then(data => {
-        if (data) {
-            if (data[0]["1"] != topFive[0]["1"]) {
-                console.log(data)
-                topFive = data
-                playNotification()
-            }
-        }
-    })
-}, 20000)
-
+app.listen(3005, () => {
+    console.log("Listening to port 3005")
+    routes(app)
+})
