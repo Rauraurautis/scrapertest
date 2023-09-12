@@ -15,13 +15,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.scrapeToriAxios = void 0;
 const axios_1 = __importDefault(require("axios"));
 const cheerio_1 = require("cheerio");
+const iconv_lite_1 = __importDefault(require("iconv-lite"));
 const scrapeToriAxios = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { data } = yield axios_1.default.get("https://www.tori.fi/uusimaa?q=&cg=0&w=1&st=g&ca=18&l=0&md=th");
-        const $ = (0, cheerio_1.load)(data);
+        const { data } = yield axios_1.default.get("https://www.tori.fi/uusimaa?q=&cg=0&w=1&st=g&ca=18&l=0&md=th", {
+            responseType: 'arraybuffer',
+            headers: {
+                'Content-Type': 'text/html; charset=ISO-8859-1'
+            },
+        });
+        const buffer = Buffer.from(data);
+        const encoding = 'ISO-8859-1';
+        const body = iconv_lite_1.default.decode(buffer, encoding);
+        const $ = (0, cheerio_1.load)(body);
         const items = $(".li-title").map((_, s) => {
             const $s = $(s);
-            return $s.text().replace(/[���)]/i, "ä");
+            return $s.text();
         }).toArray();
         const links = $(".item_row_flex").map((_, s) => {
             const $s = $(s);

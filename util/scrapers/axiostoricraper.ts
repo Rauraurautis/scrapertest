@@ -1,14 +1,23 @@
 import axios from "axios";
 import { load } from "cheerio";
+import iconv from "iconv-lite"
 
 export const scrapeToriAxios = async () => {
     try {
-        const { data } = await axios.get("https://www.tori.fi/uusimaa?q=&cg=0&w=1&st=g&ca=18&l=0&md=th")
-
-        const $ = load(data)
+        const { data } = await axios.get("https://www.tori.fi/uusimaa?q=&cg=0&w=1&st=g&ca=18&l=0&md=th", {
+            responseType: 'arraybuffer',
+            headers: {
+              'Content-Type': 'text/html; charset=ISO-8859-1'
+            },
+        })
+        
+        const buffer = Buffer.from(data)
+        const encoding = 'ISO-8859-1';
+        const body = iconv.decode(buffer, encoding)
+        const $ = load(body)
         const items = $(".li-title").map((_, s) => {
             const $s = $(s)
-            return $s.text().replace(/[���)]/i, "ä")
+            return $s.text()
         }).toArray()
 
         const links = $(".item_row_flex").map((_, s) => {
