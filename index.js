@@ -6,6 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const routes_1 = require("./routes");
 const cors_1 = __importDefault(require("cors"));
+const dotenv_1 = require("dotenv");
+(0, dotenv_1.config)();
 const app = (0, express_1.default)();
 /*
 const getToriItems = async () => {

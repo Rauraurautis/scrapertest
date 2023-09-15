@@ -4,13 +4,13 @@ import iconv from "iconv-lite"
 
 export const scrapeToriAxios = async () => {
     try {
-        const { data } = await axios.get("https://www.tori.fi/uusimaa?q=&cg=0&w=1&st=g&ca=18&l=0&md=th", {
+        const { data } = await axios.get("https://www.tori.fi/uusimaa?q=&cg=3010&w=1&st=g&c=0&ca=18&l=0&md=th", {
             responseType: 'arraybuffer',
             headers: {
-              'Content-Type': 'text/html; charset=ISO-8859-1'
+                'Content-Type': 'text/html; charset=ISO-8859-1'
             },
         })
-        
+        console.log(process.env.MESSAGE)
         const buffer = Buffer.from(data)
         const encoding = 'ISO-8859-1';
         const body = iconv.decode(buffer, encoding)

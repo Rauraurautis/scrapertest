@@ -18,12 +18,13 @@ const cheerio_1 = require("cheerio");
 const iconv_lite_1 = __importDefault(require("iconv-lite"));
 const scrapeToriAxios = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { data } = yield axios_1.default.get("https://www.tori.fi/uusimaa?q=&cg=0&w=1&st=g&ca=18&l=0&md=th", {
+        const { data } = yield axios_1.default.get("https://www.tori.fi/uusimaa?q=&cg=3010&w=1&st=g&c=0&ca=18&l=0&md=th", {
             responseType: 'arraybuffer',
             headers: {
                 'Content-Type': 'text/html; charset=ISO-8859-1'
             },
         });
+        console.log(process.env.MESSAGE);
         const buffer = Buffer.from(data);
         const encoding = 'ISO-8859-1';
         const body = iconv_lite_1.default.decode(buffer, encoding);
