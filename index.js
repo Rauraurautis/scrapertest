@@ -11,7 +11,7 @@ const dotenv_1 = require("dotenv");
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(express_1.default.static("public"));
-app.listen(3005, () => {
-    console.log("Listening to port 3005");
+app.listen(process.env.PORT, () => {
+    console.log(`Listening to port ${process.env.PORT}`);
     (0, routes_1.routes)(app);
 });

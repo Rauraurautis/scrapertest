@@ -41,7 +41,7 @@ const scrapeToriAxios = () => __awaiter(void 0, void 0, void 0, function* () {
         }).toArray();
         const images = $(".item_image, .sprite_list_no_image").map((_, s) => {
             const $s = $(s);
-            return $s.attr("src") || "http://localhost:3005/noimg.png";
+            return $s.attr("src") || "https://scraper-4do1.onrender.com/noimg.png";
         }).toArray();
         const linkItems = items.map((item, i) => {
             return { item, link: links[i] || "No link", image: images[i] || "No image" };

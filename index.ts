@@ -12,7 +12,8 @@ const app = express()
 app.use(cors())
 app.use(express.static("public"))
 
-app.listen(3005, () => {
-    console.log("Listening to port 3005")
+app.listen(process.env.PORT, () => {
+    console.log(`Listening to port ${process.env.PORT}`)
+    console.log(process.env.TEST)
     routes(app)
 })
