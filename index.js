@@ -9,34 +9,8 @@ const cors_1 = __importDefault(require("cors"));
 const dotenv_1 = require("dotenv");
 (0, dotenv_1.config)();
 const app = (0, express_1.default)();
-/*
-const getToriItems = async () => {
-    const items = await scrapeTori()
-    return items
-}
-
-let topThree: String[] = []
-
-getToriItems().then(res => {
-    topThree = res
-    console.log(topThree)
-})
-
-setInterval(() => {
-    scrapeTori().then(res => {
-        for (let i = 0; i < res.length; i++) {
-            if (topThree[i] !== res[i]) {
-                console.log(res)
-                topThree = res
-                playNotification()
-                break
-            }
-        }
-    })
-}, 10000)
-
-*/
 app.use((0, cors_1.default)());
+app.use(express_1.default.static("public"));
 app.listen(3005, () => {
     console.log("Listening to port 3005");
     (0, routes_1.routes)(app);

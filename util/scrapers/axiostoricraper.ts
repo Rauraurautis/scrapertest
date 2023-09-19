@@ -29,9 +29,9 @@ export const scrapeToriAxios = async () => {
             return $s.attr("href")
         }).toArray()
 
-        const images = $(".item_image").map((_, s) => {
+        const images = $(".item_image, .sprite_list_no_image").map((_, s) => {
             const $s = $(s)
-            return $s.attr("src")
+            return $s.attr("src") || "https://scraper-4do1.onrender.com/noimg.png"
         }).toArray()
 
         const linkItems = items.map((item, i) => {

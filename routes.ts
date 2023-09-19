@@ -2,6 +2,7 @@ import { Express, Request, Response } from "express"
 import { scrapeToriAxios } from "./util/scrapers/axiostoricraper"
 import player from "play-sound"
 import { scrapeJusaMovies } from "./util/scrapers/jusascraper"
+import { sendPushNotif } from "./util/notifSender"
 
 interface Item {
     item: string
@@ -18,6 +19,7 @@ scrapeToriAxios().then(data => {
 
 
 setInterval(() => {
+    
     scrapeToriAxios().then(data => {
         if (data) {
             if (data[0].item !== topFive[0].item) {
@@ -25,6 +27,7 @@ setInterval(() => {
             }
         }
     })
+   
 }, 20000)
 
 export const routes = (app: Express) => {
