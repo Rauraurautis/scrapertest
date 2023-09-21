@@ -9,6 +9,9 @@ import validate from "./middleware/validateResource"
 import { get, onValue, ref } from "firebase/database"
 import { database } from "./util/firebase"
 import { Token } from "typescript"
+import EventEmitter from "events"
+
+const eventEmitter = new EventEmitter()
 
 interface Item {
     item: string
@@ -21,7 +24,7 @@ export type TokenInput = {
     userAgent: string
 }
 
-let topFive: Item[] = []
+let toriItems: Item[] = []
 
 const serviceAccountData = require("./serviceAccount.json")
 
@@ -33,16 +36,17 @@ const registrationToken = 'ewaDVynnrbcc1mzQDmzRTx:APA91bEqDVs3VR815eNx-HxWgbuHq_
 const userRef = ref(database, "users/")
 
 scrapeToriAxios().then(data => {
-    if (data) topFive = data
+    if (data) toriItems = data
 }).catch(err => console.error(err))
 
 
 setInterval(() => {
     scrapeToriAxios().then(data => {
-        console.log("scraped")
         if (data) {
-            if (data[0].item !== topFive[0].item) {
-                topFive = data
+            data = data
+            if (data[0].item !== toriItems[0].item) {
+                toriItems = data
+                eventEmitter.emit("sendData")
                 /*
                                 const message = {
                                     notification: {
@@ -82,7 +86,7 @@ setInterval(() => {
 
 export const routes = (app: Express) => {
     app.get("/annetaan", (req, res) => {
-        return res.json(topFive)
+        return res.json(toriItems)
     })
 
     app.get("/jusa", async (req, res) => {
@@ -106,5 +110,41 @@ export const routes = (app: Express) => {
         results.forEach(result => { dataArray.push(result.val()) })
 
         return res.json(dataArray[0])
+    })
+
+    const prepStream = (res: Response) => {
+        if (!res) return
+        res.setHeader('Content-Type', 'text/event-stream; charset=utf-8');
+        res.setHeader('Cache-Control', 'no-cache');
+        res.setHeader('Connection', 'keep-alive');
+        res.setHeader("X-Accel-Buffering", "no")
+        res.flushHeaders()
+        res.on("close", () => {
+            res.end()
+        })
+    }
+
+    const writeSSEMessage = (data: string, res: Response) => {
+        res.write("event: message\n")
+        res.write(`data: { "value": ${data} }`)
+        res.write("\n\n")
+    }
+
+    app.get("/subscribeAnnetaan", async (req: Request, res: Response) => {
+        prepStream(res)
+
+        writeSSEMessage(JSON.stringify(toriItems), res)
+        /*
+        let interval = setInterval(() => {
+            writeSSEMessage(JSON.stringify(toriItems), res)
+        }, 2500) */
+        eventEmitter.on("sendData", () => {
+            writeSSEMessage(JSON.stringify(toriItems), res)
+        })
+
+        res.on("close", () => {
+            // clearInterval(interval)
+            res.end()
+        })
     })
 }
