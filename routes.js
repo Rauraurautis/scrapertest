@@ -34,34 +34,38 @@ const userRef = (0, database_1.ref)(firebase_1.database, "users/");
 }).catch(err => console.error(err));
 setInterval(() => {
     (0, axiostoricraper_1.scrapeToriAxios)().then(data => {
+        console.log("scraped");
         if (data) {
             if (data[0].item !== topFive[0].item) {
                 topFive = data;
-                const message = {
-                    notification: {
-                        title: 'New item on tori.fi annetaan',
-                        body: 'Go check out the tori.fi!',
-                    },
-                    token: "",
-                };
-                const dataArray = [];
-                (0, database_1.get)(userRef).then(data => data.forEach(result => { dataArray.push(result.val()); })).then(res => {
-                    dataArray.forEach(token => {
-                        firebase_admin_1.default
-                            .messaging()
-                            .send(Object.assign(Object.assign({}, message), { token: token.token }))
-                            .then((response) => {
-                            console.log('Successfully sent message:', response);
-                        })
-                            .catch((error) => {
-                            console.log('Error sending message:', error);
-                        });
-                    });
-                });
+                /*
+                                const message = {
+                                    notification: {
+                                        title: 'New item on tori.fi annetaan',
+                                        body: 'Go check out the tori.fi!',
+                                    },
+                                    token: "",
+                
+                                };
+                                
+                                const dataArray: TokenInput[] = []
+                                get(userRef).then(data => data.forEach(result => { dataArray.push(result.val()) })).then(res => {
+                                    dataArray.forEach(token => {
+                                        admin
+                                            .messaging()
+                                            .send({...message, token: token.token})
+                                            .then((response) => {
+                                                console.log('Successfully sent message:', response);
+                                            })
+                                            .catch((error) => {
+                                                console.log('Error sending message:', error);
+                                            });
+                                    })
+                                }) */
             }
         }
     });
-}, 20000);
+}, 7500);
 const routes = (app) => {
     app.get("/annetaan", (req, res) => {
         return res.json(topFive);

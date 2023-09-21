@@ -39,42 +39,39 @@ scrapeToriAxios().then(data => {
 
 setInterval(() => {
     scrapeToriAxios().then(data => {
+        console.log("scraped")
         if (data) {
             if (data[0].item !== topFive[0].item) {
                 topFive = data
+                /*
+                                const message = {
+                                    notification: {
+                                        title: 'New item on tori.fi annetaan',
+                                        body: 'Go check out the tori.fi!',
+                                    },
+                                    token: "",
                 
-                const message = {
-                    notification: {
-                        title: 'New item on tori.fi annetaan',
-                        body: 'Go check out the tori.fi!',
-                    },
-                    token: "",
-
-                };
-
-                const dataArray: TokenInput[] = []
-                get(userRef).then(data => data.forEach(result => { dataArray.push(result.val()) })).then(res => {
-                    dataArray.forEach(token => {
-                        admin
-                            .messaging()
-                            .send({...message, token: token.token})
-                            .then((response) => {
-                                console.log('Successfully sent message:', response);
-                            })
-                            .catch((error) => {
-                                console.log('Error sending message:', error);
-                            });
-                    })
-                })
-
-
-
-
+                                };
+                                
+                                const dataArray: TokenInput[] = []
+                                get(userRef).then(data => data.forEach(result => { dataArray.push(result.val()) })).then(res => {
+                                    dataArray.forEach(token => {
+                                        admin
+                                            .messaging()
+                                            .send({...message, token: token.token})
+                                            .then((response) => {
+                                                console.log('Successfully sent message:', response);
+                                            })
+                                            .catch((error) => {
+                                                console.log('Error sending message:', error);
+                                            });
+                                    })
+                                }) */
             }
         }
     })
 
-}, 20000)
+}, 7500)
 
 
 
