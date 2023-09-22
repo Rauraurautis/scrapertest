@@ -14,6 +14,5 @@ app.use((0, cors_1.default)());
 app.use(express_1.default.static("public"));
 app.listen(process.env.PORT, () => {
     console.log(`Listening to port ${process.env.PORT}`);
-    console.log(process.env.TEST);
     (0, routes_1.routes)(app);
 });

@@ -8,7 +8,7 @@ const ANNETAAN_KOKOSUOMI = "https://www.tori.fi/koko_suomi?q=&cg=0&w=3&st=g&ca=1
 
 export const scrapeToriAxios = async () => {
     try {
-        const { data } = await axios.get(KODINKONEET, {
+        const { data } = await axios.get(process.env.NODE_ENV === "DEVELOPMENT" ? ANNETAAN_KOKOSUOMI : KODINKONEET, {
             responseType: 'arraybuffer',
             headers: {
                 'Content-Type': 'text/html; charset=ISO-8859-1'
@@ -22,7 +22,7 @@ export const scrapeToriAxios = async () => {
         const items = $(".li-title").map((_, s) => {
             const $s = $(s)
             return $s.text()
-        }).toArray()
+        }).toArray().slice(process.env.NODE_ENV === "DEVELOPMENT" ? 1 : 0)
 
         const links = $(".item_row_flex").map((_, s) => {
             const $s = $(s)
@@ -32,13 +32,12 @@ export const scrapeToriAxios = async () => {
         const images = $(".item_image, .sprite_list_no_image").map((_, s) => {
             const $s = $(s)
             return $s.attr("src") || "https://scraper-4do1.onrender.com/noimg.png"
-        }).toArray()
+        }).toArray().slice(process.env.NODE_ENV === "DEVELOPMENT" ? 1 : 0)
 
         const linkItems = items.map((item, i) => {
             return { item, link: links[i] || "No link", image: images[i] || "No image" }
         })
-
-        return linkItems
+        return process.env.NODE_ENV === "DEVELOPMENT" ? linkItems : linkItems
     } catch (err) {
         console.error(err)
     }

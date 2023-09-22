@@ -21,7 +21,7 @@ const KAIKKI = "https://www.tori.fi/koko_suomi?q=&cg=0&w=3";
 const ANNETAAN_KOKOSUOMI = "https://www.tori.fi/koko_suomi?q=&cg=0&w=3&st=g&ca=18&l=0&md=th";
 const scrapeToriAxios = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { data } = yield axios_1.default.get(KODINKONEET, {
+        const { data } = yield axios_1.default.get(process.env.NODE_ENV === "DEVELOPMENT" ? ANNETAAN_KOKOSUOMI : KODINKONEET, {
             responseType: 'arraybuffer',
             headers: {
                 'Content-Type': 'text/html; charset=ISO-8859-1'
@@ -34,7 +34,7 @@ const scrapeToriAxios = () => __awaiter(void 0, void 0, void 0, function* () {
         const items = $(".li-title").map((_, s) => {
             const $s = $(s);
             return $s.text();
-        }).toArray();
+        }).toArray().slice(process.env.NODE_ENV === "DEVELOPMENT" ? 1 : 0);
         const links = $(".item_row_flex").map((_, s) => {
             const $s = $(s);
             return $s.attr("href");
@@ -42,11 +42,11 @@ const scrapeToriAxios = () => __awaiter(void 0, void 0, void 0, function* () {
         const images = $(".item_image, .sprite_list_no_image").map((_, s) => {
             const $s = $(s);
             return $s.attr("src") || "https://scraper-4do1.onrender.com/noimg.png";
-        }).toArray();
+        }).toArray().slice(process.env.NODE_ENV === "DEVELOPMENT" ? 1 : 0);
         const linkItems = items.map((item, i) => {
             return { item, link: links[i] || "No link", image: images[i] || "No image" };
         });
-        return linkItems;
+        return process.env.NODE_ENV === "DEVELOPMENT" ? linkItems : linkItems;
     }
     catch (err) {
         console.error(err);

@@ -138,12 +138,15 @@ export const routes = (app: Express) => {
         let interval = setInterval(() => {
             writeSSEMessage(JSON.stringify(toriItems), res)
         }, 2500) */
-        eventEmitter.on("sendData", () => {
-            writeSSEMessage(JSON.stringify(toriItems), res)
-        })
 
+        const listener = () => {
+            writeSSEMessage(JSON.stringify(toriItems), res)
+        }
+
+        eventEmitter.on("sendData", listener)
         res.on("close", () => {
             // clearInterval(interval)
+            eventEmitter.removeListener("sendData", listener)
             res.end()
         })
     })

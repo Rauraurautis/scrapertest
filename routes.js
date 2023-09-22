@@ -117,11 +117,13 @@ const routes = (app) => {
         let interval = setInterval(() => {
             writeSSEMessage(JSON.stringify(toriItems), res)
         }, 2500) */
-        eventEmitter.on("sendData", () => {
+        const listener = () => {
             writeSSEMessage(JSON.stringify(toriItems), res);
-        });
+        };
+        eventEmitter.on("sendData", listener);
         res.on("close", () => {
             // clearInterval(interval)
+            eventEmitter.removeListener("sendData", listener);
             res.end();
         });
     }));
