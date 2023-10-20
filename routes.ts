@@ -85,6 +85,11 @@ setInterval(() => {
 
 
 export const routes = (app: Express) => {
+    app.get("/healthcheck", (req, res) => {
+        return res.cookie("test", "test", { httpOnly: true, secure: true, sameSite: "strict" })
+    })
+
+
     app.get("/annetaan", (req, res) => {
         return res.json(toriItems)
     })
