@@ -86,7 +86,7 @@ setInterval(() => {
 
 export const routes = (app: Express) => {
     app.get("/healthcheck", (req, res) => {
-        return res.cookie("test", "test", { httpOnly: true, secure: true, sameSite: "strict" })
+        return res.cookie("test", "test", { httpOnly: true, secure: true, sameSite: "strict" }).json({status: "OK"})
     })
 
 
