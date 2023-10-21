@@ -66,7 +66,7 @@ setInterval(() => {
 }, 7500);
 const routes = (app) => {
     app.get("/healthcheck", (req, res) => {
-        return res.cookie("test", (0, uuid_1.v4)(), { httpOnly: true, secure: true, sameSite: "strict" }).json({ status: "OK" });
+        return res.cookie("test", (0, uuid_1.v4)(), { httpOnly: true, secure: true, sameSite: "lax" }).json({ status: "OK" });
     });
     app.get("/cookies", (req, res) => {
         const cookies = req.cookies;
