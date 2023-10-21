@@ -10,6 +10,7 @@ import { get, onValue, ref } from "firebase/database"
 import { database } from "./util/firebase"
 import { Token } from "typescript"
 import EventEmitter from "events"
+import { v4 as uuidv4 } from "uuid"
 
 const eventEmitter = new EventEmitter()
 
@@ -86,9 +87,16 @@ setInterval(() => {
 
 export const routes = (app: Express) => {
     app.get("/healthcheck", (req, res) => {
-        return res.cookie("test", "test", { httpOnly: true, secure: true, sameSite: "strict" }).json({status: "OK"})
+        return res.cookie("test", uuidv4(), { httpOnly: true, secure: true, sameSite: "strict" }).json({ status: "OK" })
     })
 
+    app.get("/cookies", (req: Request, res: Response) => {
+        const cookies = req.cookies
+        const test = req.cookies.get("test")
+        console.log(cookies)
+        console.log(test)
+        res.json({ status: "OK", cookie: test })
+    })
 
     app.get("/annetaan", (req, res) => {
         return res.json(toriItems)
