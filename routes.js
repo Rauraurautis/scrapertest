@@ -76,7 +76,7 @@ const routes = (app) => {
     });
     app.get("/cookies", (req, res) => {
         const cookies = req.cookies;
-        const test = req.cookies.get("test");
+        const test = req.cookies["test"];
         console.log(cookies);
         console.log(test);
         res.json({ status: "OK", cookie: test });
