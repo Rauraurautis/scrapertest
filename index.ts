@@ -9,7 +9,7 @@ const app = express()
 
 
 app.use(cors({
-    origin: 'https://scraper-react-app.onrender.com',
+    origin: ['https://scraper-react-app.onrender.com', "http://localhost:3000"],
     credentials: true,
 }));
 app.use(express.static("public"))
