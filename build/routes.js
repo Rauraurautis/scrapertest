@@ -15,7 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.routes = void 0;
 const axiostoricraper_1 = require("./util/scrapers/axiostoricraper");
 const jusascraper_1 = require("./util/scrapers/jusascraper");
-const firebase_admin_1 = __importDefault(require("firebase-admin"));
 const TokenController_1 = require("./controllers/TokenController");
 const TokenSchema_1 = require("./schema/TokenSchema");
 const validateResource_1 = __importDefault(require("./middleware/validateResource"));
@@ -25,11 +24,6 @@ const events_1 = __importDefault(require("events"));
 const uuid_1 = require("uuid");
 const eventEmitter = new events_1.default();
 let toriItems = [];
-const serviceAccountData = require("./serviceAccount.json");
-firebase_admin_1.default.initializeApp({
-    credential: firebase_admin_1.default.credential.cert(serviceAccountData)
-});
-const registrationToken = 'ewaDVynnrbcc1mzQDmzRTx:APA91bEqDVs3VR815eNx-HxWgbuHq_KPIrMpL5xyWmhQ6IytZzy9Bsl48YBiwchz3S0SIgMuWyD3pp2a00d5uDYiKrpb2gh8Yye27xkkXacP-EiQtjoQloUIvgViouacXbp_Z5nftk5W';
 const userRef = (0, database_1.ref)(firebase_1.database, "users/");
 (0, axiostoricraper_1.scrapeToriAxios)().then(data => {
     if (data)

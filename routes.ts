@@ -1,14 +1,12 @@
 import { Express, Request, Response } from "express"
 import { scrapeToriAxios } from "./util/scrapers/axiostoricraper"
 import { scrapeJusaMovies } from "./util/scrapers/jusascraper"
-import { sendPushNotif } from "./util/notifSender"
 import admin from "firebase-admin"
 import { writeToDb } from "./controllers/TokenController"
 import { CreateTokenInput, createTokenSchema } from "./schema/TokenSchema"
 import validate from "./middleware/validateResource"
 import { get, onValue, ref } from "firebase/database"
 import { database } from "./util/firebase"
-import { Token } from "typescript"
 import EventEmitter from "events"
 import { v4 as uuidv4 } from "uuid"
 
@@ -27,13 +25,9 @@ export type TokenInput = {
 
 let toriItems: Item[] = []
 
-const serviceAccountData = require("./serviceAccount.json")
 
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccountData)
-})
 
-const registrationToken = 'ewaDVynnrbcc1mzQDmzRTx:APA91bEqDVs3VR815eNx-HxWgbuHq_KPIrMpL5xyWmhQ6IytZzy9Bsl48YBiwchz3S0SIgMuWyD3pp2a00d5uDYiKrpb2gh8Yye27xkkXacP-EiQtjoQloUIvgViouacXbp_Z5nftk5W';
+
 const userRef = ref(database, "users/")
 
 scrapeToriAxios().then(data => {
