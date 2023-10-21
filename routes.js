@@ -22,6 +22,7 @@ const validateResource_1 = __importDefault(require("./middleware/validateResourc
 const database_1 = require("firebase/database");
 const firebase_1 = require("./util/firebase");
 const events_1 = __importDefault(require("events"));
+const uuid_1 = require("uuid");
 const eventEmitter = new events_1.default();
 let toriItems = [];
 const serviceAccountData = require("./serviceAccount.json");
@@ -71,7 +72,14 @@ setInterval(() => {
 }, 7500);
 const routes = (app) => {
     app.get("/healthcheck", (req, res) => {
-        return res.cookie("test", "test", { httpOnly: true, secure: true, sameSite: "strict" }).json({ status: "OK" });
+        return res.cookie("test", (0, uuid_1.v4)(), { httpOnly: true, secure: true, sameSite: "strict" }).json({ status: "OK" });
+    });
+    app.get("/cookies", (req, res) => {
+        const cookies = req.cookies;
+        const test = req.cookies.get("test");
+        console.log(cookies);
+        console.log(test);
+        res.json({ status: "OK", cookie: test });
     });
     app.get("/annetaan", (req, res) => {
         return res.json(toriItems);
