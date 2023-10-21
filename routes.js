@@ -70,6 +70,9 @@ setInterval(() => {
     });
 }, 7500);
 const routes = (app) => {
+    app.get("/healthcheck", (req, res) => {
+        return res.cookie("test", "test", { httpOnly: true, secure: true, sameSite: "strict" }).json({ status: "OK" });
+    });
     app.get("/annetaan", (req, res) => {
         return res.json(toriItems);
     });
