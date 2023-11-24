@@ -82,6 +82,10 @@ const routes = (app) => {
         const movies = yield (0, jusascraper_1.scrapeJusaMovies)();
         return res.json(movies);
     }));
+    app.get("/jusachristmas", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const movies = yield (0, jusascraper_1.scrapeJusaChristmasMovies)();
+        return res.json(movies);
+    }));
     app.post("/db", (0, validateResource_1.default)(TokenSchema_1.createTokenSchema), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const { token, userAgent } = req.body;

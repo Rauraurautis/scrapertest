@@ -1,7 +1,6 @@
 import { Express, Request, Response } from "express"
 import { scrapeToriAxios } from "./util/scrapers/axiostoricraper"
-import { scrapeJusaMovies } from "./util/scrapers/jusascraper"
-import admin from "firebase-admin"
+import { scrapeJusaChristmasMovies, scrapeJusaMovies } from "./util/scrapers/jusascraper"
 import { writeToDb } from "./controllers/TokenController"
 import { CreateTokenInput, createTokenSchema } from "./schema/TokenSchema"
 import validate from "./middleware/validateResource"
@@ -9,6 +8,7 @@ import { get, onValue, ref } from "firebase/database"
 import { database } from "./util/firebase"
 import EventEmitter from "events"
 import { v4 as uuidv4 } from "uuid"
+
 
 const eventEmitter = new EventEmitter()
 
@@ -81,7 +81,7 @@ setInterval(() => {
 
 export const routes = (app: Express) => {
     app.get("/healthcheck", (req, res) => {
-        return res.cookie("test", uuidv4(), { httpOnly: true, secure: true, sameSite: "none"}).json({ status: "OK" })
+        return res.cookie("test", uuidv4(), { httpOnly: true, secure: true, sameSite: "none" }).json({ status: "OK" })
     })
 
     app.get("/cookies", (req: Request, res: Response) => {
@@ -98,6 +98,11 @@ export const routes = (app: Express) => {
 
     app.get("/jusa", async (req, res) => {
         const movies = await scrapeJusaMovies()
+        return res.json(movies)
+    })
+
+    app.get("/jusachristmas", async (req, res) => {
+        const movies = await scrapeJusaChristmasMovies()
         return res.json(movies)
     })
 
