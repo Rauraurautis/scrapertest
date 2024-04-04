@@ -28,7 +28,7 @@ const scrapeJusaMovies = () => __awaiter(void 0, void 0, void 0, function* () {
         const year = (_a = parts.pop()) !== null && _a !== void 0 ? _a : "NO YEAR";
         const name = parts.join(" ");
         return { option: name };
-    });
+    }).filter(movie => movie.option.length > 0);
     return movies;
 });
 exports.scrapeJusaMovies = scrapeJusaMovies;
