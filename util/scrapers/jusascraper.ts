@@ -17,7 +17,7 @@ export const scrapeJusaMovies = async () => {
         const year = parts.pop() ?? "NO YEAR"
         const name = parts.join(" ")
         return { option: name }
-    })
+    }).filter(movie => movie.option.length > 0)
 
     return movies
 }

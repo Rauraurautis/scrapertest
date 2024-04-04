@@ -13,7 +13,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.routes = void 0;
-const axiostoricraper_1 = require("./util/scrapers/axiostoricraper");
 const jusascraper_1 = require("./util/scrapers/jusascraper");
 const TokenController_1 = require("./controllers/TokenController");
 const TokenSchema_1 = require("./schema/TokenSchema");
@@ -25,17 +24,19 @@ const uuid_1 = require("uuid");
 const eventEmitter = new events_1.default();
 let toriItems = [];
 const userRef = (0, database_1.ref)(firebase_1.database, "users/");
-(0, axiostoricraper_1.scrapeToriAxios)().then(data => {
-    if (data)
-        toriItems = data;
-}).catch(err => console.error(err));
+/*
+scrapeToriAxios().then(data => {
+    if (data) toriItems = data
+}).catch(err => console.error(err))
+
+
 setInterval(() => {
-    (0, axiostoricraper_1.scrapeToriAxios)().then(data => {
+    scrapeToriAxios().then(data => {
         if (data) {
-            data = data;
+            data = data
             if (data[0].item !== toriItems[0].item) {
-                toriItems = data;
-                eventEmitter.emit("sendData");
+                toriItems = data
+                eventEmitter.emit("sendData")
                 /*
                                 const message = {
                                     notification: {
@@ -59,11 +60,13 @@ setInterval(() => {
                                                 console.log('Error sending message:', error);
                                             });
                                     })
-                                }) */
+                                })
             }
         }
-    });
-}, 7500);
+    })
+
+}, 7500)
+*/
 const routes = (app) => {
     app.get("/healthcheck", (req, res) => {
         return res.cookie("test", (0, uuid_1.v4)(), { httpOnly: true, secure: true, sameSite: "none" }).json({ status: "OK" });
@@ -102,6 +105,12 @@ const routes = (app) => {
         results.forEach(result => { dataArray.push(result.val()); });
         return res.json(dataArray[0]);
     }));
+    /*
+        app.get("/movies", async (req: Request, res: Response) => {
+            await scrapeImdb()
+            res.send("hi")
+        })
+    */
     const prepStream = (res) => {
         if (!res)
             return;

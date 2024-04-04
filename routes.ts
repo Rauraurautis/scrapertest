@@ -1,5 +1,5 @@
 import { Express, Request, Response } from "express"
-import { scrapeToriAxios } from "./util/scrapers/axiostoricraper"
+import { scrapeToriAxios, scrapeImdb } from "./util/scrapers/axiostoricraper"
 import { scrapeJusaChristmasMovies, scrapeJusaMovies } from "./util/scrapers/jusascraper"
 import { writeToDb } from "./controllers/TokenController"
 import { CreateTokenInput, createTokenSchema } from "./schema/TokenSchema"
@@ -29,7 +29,7 @@ let toriItems: Item[] = []
 
 
 const userRef = ref(database, "users/")
-
+/*
 scrapeToriAxios().then(data => {
     if (data) toriItems = data
 }).catch(err => console.error(err))
@@ -65,14 +65,13 @@ setInterval(() => {
                                                 console.log('Error sending message:', error);
                                             });
                                     })
-                                }) */
+                                }) 
             }
         }
     })
 
 }, 7500)
-
-
+*/
 
 
 
@@ -123,7 +122,12 @@ export const routes = (app: Express) => {
 
         return res.json(dataArray[0])
     })
-
+/*
+    app.get("/movies", async (req: Request, res: Response) => {
+        await scrapeImdb()
+        res.send("hi")
+    })
+*/
     const prepStream = (res: Response) => {
         if (!res) return
         res.setHeader('Content-Type', 'text/event-stream; charset=utf-8');
