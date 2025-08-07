@@ -7,10 +7,14 @@ export const scrapeJusaMovies = async () => {
 
     const $ = load(data)
 
-    const movieData: String[] = $(".headline-2.prettify").map((_, s) => {
+    
+
+    const movieData: String[] = $(".name.prettify").map((_, s) => {
         const $s = $(s)
         return $s.text()
     }).toArray()
+
+    console.log(movieData)
 
     const movies = movieData.map((movie, i) => {
         const parts = movie.split(" ")

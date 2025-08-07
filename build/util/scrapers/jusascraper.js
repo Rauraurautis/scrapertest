@@ -18,10 +18,11 @@ const cheerio_1 = require("cheerio");
 const scrapeJusaMovies = () => __awaiter(void 0, void 0, void 0, function* () {
     const { data } = yield axios_1.default.get("https://letterboxd.com/jusa/list/rolli-1/share/jZqpon5C9BeqalWd/detail/", { headers: { "Content-Type": "text/html; charset=iso-8859-1 " } });
     const $ = (0, cheerio_1.load)(data);
-    const movieData = $(".headline-2.prettify").map((_, s) => {
+    const movieData = $(".name.prettify").map((_, s) => {
         const $s = $(s);
         return $s.text();
     }).toArray();
+    console.log(movieData);
     const movies = movieData.map((movie, i) => {
         var _a;
         const parts = movie.split(" ");
